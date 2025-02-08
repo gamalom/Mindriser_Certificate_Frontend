@@ -1,30 +1,27 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { useDispatch } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
 import { add } from "../../../store/cartSlice";
+import { fetchProducts } from "../../../store/productSlice";
 
 const Product = () => {
-  const [product, setProduct] = useState([]); 
+  const {data : products,status}= useSelector((state)=>state.product)
+  // const product = data
+  
   const dispatch = useDispatch();
 
-  const fetchProduct = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/api/products");
-      if (response.status === 200) {
-        setProduct(response.data.data);
-      }
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
+  
 
   useEffect(() => {
-    fetchProduct();
+    dispatch(fetchProducts());
   }, []);
 
 const addToCart = (product)=>{
   dispatch(add(product))
 
+}
+if(status == 'loading'){
+  return <h1>Loading ....</h1>
 }
 
   return (
@@ -36,7 +33,7 @@ const addToCart = (product)=>{
           </h1>
 
           <div className="flex flex-wrap justify-between">
-            {product.map((product) => (
+            {products.map((product) => (
               <div
                 // onClick={() => navigate(`/productdetails/${product._id}`)}
                 key={product._id}

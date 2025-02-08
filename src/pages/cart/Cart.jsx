@@ -1,8 +1,15 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './Cart.css';
+import { remove } from '../../store/cartSlice';
+
 
 const Cart = () => {
   const products = useSelector((state) => state.cart); 
+  const dispatch = useDispatch()
+  const removeItem = (productId)=>{
+    console.log(productId)
+     dispatch(remove(productId))
+      }
 
   return (
     <div className="h-screen bg-gray-100 pt-20">
@@ -28,7 +35,7 @@ const Cart = () => {
                       <input className="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" value="2" min="1" />
                       <span className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"> + </span>
                     </div>
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-4" onClick={()=>{removeItem(product._id)}}>
                       <p className="text-sm">259.000 ₭</p>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-5 w-5 cursor-pointer duration-150 hover:text-red-500">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
